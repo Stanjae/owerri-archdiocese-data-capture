@@ -40,6 +40,40 @@ const videoConstraints = {
             <Button onClick={capture} variant={'outline'} size={'default'}>
             <Camera className="mr-4 h-4 w-4" />Capture</Button>
         </div>
+        <WebcamCapture02/>
       </div>
+    );
+  };
+
+
+
+
+  const WebcamCapture02 = () => {
+    const [deviceId, setDeviceId] = React.useState({});
+    const [devices, setDevices] = React.useState([]);
+  
+    const handleDevices = React.useCallback(
+      mediaDevices =>
+        setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
+      [setDevices]
+    );
+  
+    React.useEffect(
+      () => {
+        navigator.mediaDevices.enumerateDevices().then(handleDevices);
+      },
+      [handleDevices]
+    );
+  
+    return (
+      <>
+        {devices.map((device, key) => (
+            <div>
+              <Webcam audio={false} videoConstraints={{ deviceId: device.deviceId }} />
+              {device.label || `Device ${key + 1}`}
+            </div>
+  
+          ))}
+      </>
     );
   };
