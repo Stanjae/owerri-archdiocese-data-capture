@@ -53,8 +53,8 @@ const videoConstraints = {
     const [devices, setDevices] = React.useState([]);
   
     const handleDevices = React.useCallback(
-      mediaDevices =>
-        setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
+      (mediaDevices:any) =>
+        setDevices(mediaDevices.filter(({ kind }:any) => kind === "videoinput")),
       [setDevices]
     );
   
@@ -67,10 +67,10 @@ const videoConstraints = {
   
     return (
       <>
-        {devices.map((device, key) => (
+        {devices.map((device:any, key:any) => (
             <div>
-              <Webcam audio={false} videoConstraints={{ deviceId: device.deviceId }} />
-              {device.label || `Device ${key + 1}`}
+              <Webcam audio={false} videoConstraints={{ deviceId: device?.deviceId }} />
+              {device?.label || `Device ${key + 1}`}
             </div>
   
           ))}
