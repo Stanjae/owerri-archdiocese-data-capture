@@ -128,3 +128,12 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+
+export const handleFetchStates =async()=>{
+    let response = await fetch(
+      'https://nga-states-lga.onrender.com/fetch'
+    );
+    let json = await response.json();
+    return json
+}
