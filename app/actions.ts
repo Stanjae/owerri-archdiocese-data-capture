@@ -4,8 +4,8 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { EditSchoolType, SchoolDataType, StudentDataExtended, EditStudentDataExtended, LoginType } from "@/lib/definitions";
-import { EditSchoolDataSchema, SchoolDataSchema, StudentDataSchemaExtended, EditStudentDataSchemaExtended, LoginSchema } from "@/lib/zod";
+import { EditSchoolType, SchoolDataType, StudentDataExtended, EditStudentDataExtended, LoginType, InitialStateType } from "@/lib/definitions";
+import { EditSchoolDataSchema, SchoolDataSchema, StudentDataSchemaExtended, EditStudentDataSchemaExtended, LoginSchema, ResetPwSchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
 
 export const signUpAction = async (formData: LoginType) => {
@@ -65,7 +65,7 @@ export const signInAction = async (formData: LoginType) => {
   }
 };
 
-export const forgotPasswordAction = async (formData: FormData) => {
+export const forgotPasswordAction = async (prevState: any, formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = createClient();
   const origin = headers().get("origin");
@@ -99,27 +99,27 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
-export const resetPasswordAction = async (formData: FormData) => {
+export const resetPasswordAction = async (formData: InitialStateType) => {
   const supabase = createClient();
 
-  const password = formData.get("password") as string;
-  const confirmPassword = formData.get("confirmPassword") as string;
+  const validatedFields = ResetPwSchema.safeParse(formData);
+  let response;
 
-  if (!password || !confirmPassword) {
-    encodedRedirect(
-      "error",
-      "/protected/reset-password",
-      "Password and confirm password are required",
-    );
+  if (!validatedFields.success) {
+    return {
+      status: 400, message: 'Passwords do not match!.',
+    };
   }
 
-  if (password !== confirmPassword) {
+  const {password} = validatedFields.data
+
+  /* if (password !== confirmPassword) {
     encodedRedirect(
       "error",
       "/protected/reset-password",
       "Passwords do not match",
     );
-  }
+  } */
 
   const { error } = await supabase.auth.updateUser({
     password: password,

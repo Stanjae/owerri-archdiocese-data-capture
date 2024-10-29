@@ -71,3 +71,16 @@ export const RegisterSchema = object({
     message: 'Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
   }),
 })
+
+export const ResetPwSchema = object({
+  password: string().min(6, { message: 'Must have at least 6 character' })
+  .regex(passwordValidation, {
+    message: 'Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
+  }),
+  confirmPassword: string().min(6),
+}).refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
+    })
+
+/* ; */

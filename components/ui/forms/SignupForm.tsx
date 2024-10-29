@@ -1,5 +1,5 @@
 'use client'
-import { signInAction, signUpAction } from '@/app/actions'
+import { signUpAction } from '@/app/actions'
 import { LoginType } from '@/lib/definitions'
 import { LoginSchema } from '@/lib/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
