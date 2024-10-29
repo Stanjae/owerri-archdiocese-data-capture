@@ -1,20 +1,12 @@
-
+import React from 'react'
 import Link from "next/link"
 import { columns } from './_components/columns'
 import {
   File,
-  Home,
-  LineChart,
   ListFilter,
   MoreHorizontal,
-  Package,
-  Package2,
-  PanelLeft,
   PlusCircle,
-  Search,
-  Settings,
-  ShoppingCart,
-  Users2,
+
 } from "lucide-react"
 
 
@@ -62,9 +54,13 @@ import {
 import StudentDataTable from "@/components/ui/dataTable/StudentDataTable"
 import { getAllStudents } from "@/app/data"
 import { TableStudentData } from "@/lib/definitions"
+import { Metadata } from "next"
 
 
-export const description = "An products dashboard with a sidebar navigation."
+export const metadata: Metadata = {
+  title: "All Records | Dashboard",
+  description: "Authentication forms built using the components.",
+}
 
 export default async function AllRecords() {
   const data:TableStudentData = await getAllStudents();
