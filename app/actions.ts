@@ -63,6 +63,8 @@ export const signInAction = async (formData: LoginType) => {
     return { status:500, message:error?.message}
     //return encodedRedirect("error", "/sign-in", error.message);
   }
+
+  return { status:200, message:"Logged in Sucessfully"}
 };
 
 export const forgotPasswordAction = async (prevState: any, formData: FormData) => {

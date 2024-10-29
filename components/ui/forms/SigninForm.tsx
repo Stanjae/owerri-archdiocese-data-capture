@@ -20,11 +20,11 @@ const SigninForm = () => {
   
        const onSubmit =async(formData:LoginType)=>{
         const response = await signInAction(formData)
-        if(response?.status == 201){
-          toast.success(response.message)
+        if(response?.status == 200){
+          toast.success(response?.message)
           setTimeout(()=> (router.push('/dashboard')), 2000)
         }else{
-            toast.error(response.message)
+            toast.error(response?.message)
         }
        }
   return (

@@ -20,7 +20,7 @@ const SignupForm =()=>{
        const onSubmit =async(formData:LoginType)=>{
         const response = await signUpAction(formData)
         if(response?.status){
-          toast.error(response.message)
+          toast.error(response?.message)
         }
        }
   return (
