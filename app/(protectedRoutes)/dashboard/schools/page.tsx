@@ -8,8 +8,13 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { CreateSchoolModal } from '@/components/ui/modals/CreateSchoolModal'
 import { getSchools } from '@/app/data'
 import { SchoolType } from '@/lib/definitions'
+import { Metadata } from "next"
   
-
+export const metadata: Metadata = {
+  title: "Schools | Dashboard",
+  description: "Authentication forms built using the components.",
+  
+}
 
 export default async function AllSchoolsPage(){
   const data:SchoolType = await getSchools()

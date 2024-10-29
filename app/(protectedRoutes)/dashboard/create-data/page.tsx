@@ -34,19 +34,15 @@ import {
     SelectValue,
   } from "@/components/ui/select"
   import { Textarea } from "@/components/ui/textarea"
-  import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-  } from "@/components/ui/tooltip"
-import { TooltipProvider } from "@radix-ui/react-tooltip"
-import { WebcamCapture } from "@/components/ui/webcamCapture/WebCam"
-import CreateDataForm from "@/components/ui/forms/CreateDataForm"
+
 import CretePageWrapper from "@/components/ui/Clientwrappers/CretePageWrapper"
 import { getSchoolsOptions } from "@/app/data"
+import { Metadata } from "next"
   
-  export const description =
-    "An AI playground with a sidebar settings drawer menu. The main content are and messages."
+export const metadata: Metadata = {
+  title: "Create Record | Dashboard",
+  description: "Authentication forms built using the components.",
+}
   
   export default async function CreateDataPage() {
     const schools = await getSchoolsOptions()

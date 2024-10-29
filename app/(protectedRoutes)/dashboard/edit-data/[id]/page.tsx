@@ -27,9 +27,12 @@ import {
 import { getSchoolsOptions, getStudentDataById } from "@/app/data"
 import EditPageWrapper from "@/components/ui/Clientwrappers/EditPageWrapper"
 import { Suspense } from "react"
+import { Metadata } from "next"
   
-  export const description =
-    "The main content area shows a form to configure the model and messages."
+export const metadata: Metadata = {
+  title: "Create Record | Dashboard",
+  description: "Authentication forms built using the components.",
+}
   
   export default async function EditDataPage({params}:{params:{id:string}}) {
     const student = await getStudentDataById(params.id)

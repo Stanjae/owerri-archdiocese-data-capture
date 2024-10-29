@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     Bird,
     Rabbit,
@@ -36,11 +37,16 @@ import Image from 'next/image'
 import AgeTypography from "@/components/ui/Typography/AgeTypography"
 import { Separator } from "@/components/ui/separator"
 import { DetailedStudentType } from "@/lib/definitions"
+import { Metadata } from "next"
+  
+export const metadata: Metadata = {
+  title: "Create Record | Dashboard",
+  description: "Authentication forms built using the components.",
+}
 
   
 const imageIndex = Math.random() * bgImages.length;
-  export const description =
-    "An AI playground with a sidebar settings drawer menu."
+
   
   export default async function StudentProfilePage({params}:{params:{uid:string | number}}) {
     const studentData:DetailedStudentType = await getDetailedStudent(params.uid)
