@@ -42,10 +42,9 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "All Records | Dashboard",
-  description: "Authentication forms built using the components.",
 }
 
-export default async function AllRecords() {
+const AllRecords =async()=> {
   const data:TableStudentData = await getAllStudents();
   
   return (
@@ -126,3 +125,5 @@ export default async function AllRecords() {
     </div>
   )
 }
+
+export default AllRecords;
