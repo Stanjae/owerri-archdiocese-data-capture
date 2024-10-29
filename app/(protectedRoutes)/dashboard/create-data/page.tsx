@@ -4,9 +4,6 @@ import {
     Bot,
     Code2,
     CornerDownLeft,
-    LifeBuoy,
-    Mic,
-    Paperclip,
     Rabbit,
     Settings,
     Settings2,
@@ -45,13 +42,16 @@ import {
 import { TooltipProvider } from "@radix-ui/react-tooltip"
 import { WebcamCapture } from "@/components/ui/webcamCapture/WebCam"
 import CreateDataForm from "@/components/ui/forms/CreateDataForm"
+import CretePageWrapper from "@/components/ui/Clientwrappers/CretePageWrapper"
+import { getSchoolsOptions } from "@/app/data"
   
   export const description =
-    "An AI playground with a sidebar navigation and a main content area. The playground has a header with a settings drawer and a share button. The sidebar has navigation links and a user menu. The main content area shows a form to configure the model and messages."
+    "An AI playground with a sidebar settings drawer menu. The main content are and messages."
   
-  export default function CreateDataPage() {
+  export default async function CreateDataPage() {
+    const schools = await getSchoolsOptions()
     return (
-      <div className="grid h-screen w-full pl-[53px]">
+      <div className="grid min-h-dvh w-full pl-[53px]">
         <div className="flex flex-col">
           <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
             <h1 className="text-xl font-semibold">Create Data</h1>
@@ -183,16 +183,7 @@ import CreateDataForm from "@/components/ui/forms/CreateDataForm"
               Share
             </Button>
           </header>
-          <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
-            <div
-              className="relative hidden flex-col items-start gap-8 md:flex" x-chunk="dashboard-03-chunk-0"
-            >
-            <WebcamCapture/>
-            </div>
-            <div className="relative rounded-xl bg-muted/50 p-4 lg:col-span-2">
-              <CreateDataForm/>
-            </div>
-          </main>
+          <CretePageWrapper schools={schools}/>
         </div>
       </div>
     )

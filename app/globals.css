@@ -67,3 +67,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.bg01{
+  background-image:url('../public/bg01.jpg')
+}
+
+.bg02{
+  background-image:url('../public/bg02.jpg')
+}
+
+.bg03{
+  background-image:url('../public/bg03.jpg')
+}
+
+.bg04{
+  background-image:url('../public/bg04.jpg')
+}
+
+.bg05{
+  background-image:url('../public/bg05.jpg')
+}
+
+.bg06{
+  background-image:url('../public/bg06.png')
+}
+
+.bg07{
+  background-image:url('../public/bg07.jpg')
+}

@@ -1,155 +1,148 @@
 'use client'
 import Image from 'next/image';
-import React from 'react'
+import React, { useState } from 'react'
 import Webcam from 'react-webcam';
 import { Button } from '../button';
-import { Camera } from 'lucide-react';
+import { Camera, SaveIcon, } from 'lucide-react';
+import { Label } from '../label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
+
+import { supabase } from '@/utils/supabase/client';
+import { base64ToBlob} from '@/lib/clientFuntions';
+import PreviewImage from '../modals/PreviewImage';
+import { toast } from 'sonner';
+import { supaStoreImageUpload } from '@/lib/definitions';
+import dayjs from 'dayjs'
 
 const videoConstraints = {
     width: 1280,
     height: 720,
-    facingMode: "user"
   };
   
- export const WebcamCapture = () => {
-    const webcamRef = React.useRef(null);
-    const [imgSrc, setImgSrc] = React.useState<any>();
+  const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 2000));
+  
+ export const WebcamCapture = ({setGetImageUrl}:any) => {
+    const webcamRef = React.useRef<Webcam>(null);
+    const [imgSrc, setImgSrc] = useState<any>();
 
-    const capture = React.useCallback(() => {
+    const [newdeviceId, setDeviceId] = useState<any>(null);
+    const [devices, setDevices] = useState([]);
+
+    const [previewImage, setPreviewImage] = useState<any>();
+
+    const [fileName, setFileName] = useState<any>("");
+
+  
+    const handleDevices = React.useCallback(
+      (mediaDevices:any) =>
+        setDevices(mediaDevices.filter(({ kind }:any) => kind === "videoinput")),
+      [setDevices]
+    );
+  
+    React.useEffect(
+      () => {
+        navigator.mediaDevices.enumerateDevices().then(handleDevices);
+      },
+      [handleDevices]
+    );
+
+    const capture = React.useCallback(async() => {
         const imageSrc = webcamRef?.current?.getScreenshot();
-        setImgSrc(imageSrc)
+        const mimeType = 'image/jpeg';
+        const blob = await base64ToBlob(imageSrc, mimeType);
+        setPreviewImage(imageSrc)
+        setFileName(imageSrc?.slice(30,45) + dayjs().format('HH-mm-ss').toString() + ".jpg");
+        setImgSrc(blob)
       },
       [webcamRef]
     );
 
+    const saveToBucket: supaStoreImageUpload =async()=>{
+      const file = new File([imgSrc], `${fileName}`, { type: 'image/jpeg' });
+        const { data, error } = await supabase.storage.from('student-images').upload(`student-profile-images/${fileName}`, file, {
+            cacheControl: '3600',
+            upsert: false
+          })
+        return data?.path
+    }
+   
+    const getImageUrl = async(filepath:any) => {
+      const { data } = await supabase.storage
+        .from('student-images')
+        .getPublicUrl(filepath);
+      console.log("a knight: ", data)
+      setGetImageUrl(data)
+    };
+
+    const saveImageTransaction =async()=>{
+       try{
+         const getImagePath = await saveToBucket()
+         await getImageUrl(getImagePath);
+         toast.promise(promise, {
+          loading: 'Loading...',
+          success: () => {
+            return `Student Image has been Uploaded Sucessfully`;
+          },
+          error: 'Something went wrong',
+        });
+      }catch(err){
+        toast.error("A bug was detected!")
+      }
+    }
+    
     return (
       <div>
-      {imgSrc && <Image width={500} height={500} src={imgSrc} alt="jus"/>}
         <div className=" border-4 border-primary">
+          {newdeviceId ?
             <Webcam
             audio={false}
             height={720}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             width={1280}
-            videoConstraints={videoConstraints}
-            />
+            mirrored={true}
+            videoConstraints={{...videoConstraints, deviceId:newdeviceId}}
+            
+            />:
+            <Image width={500} height={500} className=" h-32 w-full" src="https://fakeimg.pl/500x500"alt="no image"/>
+            }
         </div>
         <div className=' py-2 flex gap-3 justify-center items-center'>
             <Button onClick={()=> setImgSrc("")} variant={'destructive'} size={'default'}>Cancel Photo</Button>
             <Button onClick={capture} variant={'outline'} size={'default'}>
-            <Camera className="mr-4 h-4 w-4" />Capture</Button>
+              <Camera className="mr-4 h-4 w-4" />Capture
+            </Button>
         </div>
+        {imgSrc && (
+          <div className=' py-2 flex gap-3 justify-center items-center'>
+           <PreviewImage imageUrl={previewImage}/>
+          <Button className=' bg-green-600 text-white hover:bg-green-400' onClick={saveImageTransaction} variant={'default'} size={'default'}>
+            <SaveIcon className="mr-4 h-4 w-4" />Save
+          </Button>
+      </div>
+        )}
 
-        {/*<form className="grid w-full items-start gap-6">
-            <fieldset className="grid gap-6 rounded-lg border p-4">
-                  <legend className="-ml-1 px-1 text-sm font-medium">
-                    Settings
-                  </legend>
-                  <div className="grid gap-3">
-                    <Label htmlFor="model">Model</Label>
-                    <Select>
-                      <SelectTrigger
-                        id="model"
-                        className="items-start [&_[data-description]]:hidden"
-                      >
-                        <SelectValue placeholder="Select a model" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="genesis">
-                          <div className="flex items-start gap-3 text-muted-foreground">
-                            <Rabbit className="size-5" />
-                            <div className="grid gap-0.5">
-                              <p>
-                                Neural{" "}
-                                <span className="font-medium text-foreground">
-                                  Genesis
-                                </span>
-                              </p>
-                              <p className="text-xs" data-description>
-                                Our fastest model for general use cases.
-                              </p>
-                            </div>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="explorer">
-                          <div className="flex items-start gap-3 text-muted-foreground">
-                            <Bird className="size-5" />
-                            <div className="grid gap-0.5">
-                              <p>
-                                Neural{" "}
-                                <span className="font-medium text-foreground">
-                                  Explorer
-                                </span>
-                              </p>
-                              <p className="text-xs" data-description>
-                                Performance and speed for efficiency.
-                              </p>
-                            </div>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="quantum">
-                          <div className="flex items-start gap-3 text-muted-foreground">
-                            <Turtle className="size-5" />
-                            <div className="grid gap-0.5">
-                              <p>
-                                Neural{" "}
-                                <span className="font-medium text-foreground">
-                                  Quantum
-                                </span>
-                              </p>
-                              <p className="text-xs" data-description>
-                                The most powerful model for complex computations.
-                              </p>
-                            </div>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="temperature">Temperature</Label>
-                    <Input id="temperature" type="number" placeholder="0.4" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="grid gap-3">
-                      <Label htmlFor="top-p">Top P</Label>
-                      <Input id="top-p" type="number" placeholder="0.7" />
-                    </div>
-                    <div className="grid gap-3">
-                      <Label htmlFor="top-k">Top K</Label>
-                      <Input id="top-k" type="number" placeholder="0.0" />
-                    </div>
-                  </div>
-                </fieldset>
-                 <fieldset className="grid gap-6 rounded-lg border p-4">
-                  <legend className="-ml-1 px-1 text-sm font-medium">
-                    Messages
-                  </legend>
-                  <div className="grid gap-3">
-                    <Label htmlFor="role">Role</Label>
-                    <Select defaultValue="system">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="system">System</SelectItem>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="assistant">Assistant</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="content">Content</Label>
-                    <Textarea
-                      id="content"
-                      placeholder="You are a..."
-                      className="min-h-[9.5rem]"
-                    />
-                  </div>
-                </fieldset> 
-              </form>*/}
-        <WebcamCapture02/>
+        <form className="grid w-full items-start gap-6">
+            
+          <fieldset className="grid gap-6 rounded-lg border p-4">
+            <legend className="-ml-1 px-1 text-sm font-medium">
+              Choose Camera Model
+            </legend>
+            <div className="grid gap-3">
+              <Label htmlFor="role">Model</Label>
+              <Select onValueChange={(e)=> setDeviceId(e)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a camera model" />
+                </SelectTrigger>
+                <SelectContent>
+                {devices && devices?.map((device:any, index:number) => (
+                   <SelectItem key={index} value={device?.deviceId || "hay"}>{device?.label}</SelectItem>
+                ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </fieldset> 
+        </form>
       </div>
     );
   };

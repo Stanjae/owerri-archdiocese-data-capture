@@ -1,9 +1,10 @@
 
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "@/components/ThemeProvider"
-import Link from "next/link";
+import ReactQueryProvider from '@/lib/Providers/ReactQueryProvider'
 import "./globals.css";
+import {dummyFunction} from './data'
+import { Toaster } from "sonner";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -15,11 +16,12 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await dummyFunction()
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased">
@@ -29,9 +31,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>
-            {children}
-          </main>
+          <ReactQueryProvider>
+            <main>
+              {children}
+              <Toaster position="bottom-right" richColors/>
+            </main>
+          </ReactQueryProvider>
         </ThemeProvider>
       </body>
     </html>
