@@ -1,33 +1,34 @@
 import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../dropdown-menu'
-import Image from 'next/image'
+import AvatarBtn from '../customBtns/AvatarBtn'
 import { Button } from '../button'
+import { signOutAction } from '@/app/actions'
+
+
 
 const DashAvatar = () => {
+ 
   return (
     <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
+                <Button variant="outline"
                   size="icon"
                   className="overflow-hidden rounded-full"
                 >
-                  <Image
-                    src=""
-                    width={36}
-                    height={36}
-                    alt="Avatar"
-                    className="overflow-hidden rounded-full"
-                  />
+                  <AvatarBtn/>
                 </Button>
+                
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <form action={signOutAction}>
+                    <Button variant="ghost" size={'sm'} className=' text-destructive' type='submit'>Logout</Button>
+                    </form>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
   )

@@ -1,8 +1,11 @@
 import { type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
+import { getCurrentUser } from "./app/data";
+import { redirect } from "next/navigation";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  const went = await updateSession(request);
+  return went
 }
 
 export const config = {

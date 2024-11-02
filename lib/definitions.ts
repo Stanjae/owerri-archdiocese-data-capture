@@ -32,6 +32,7 @@ export type StudentData ={
         school:string;
         schoolclass:string;
         classArm: string;
+        userId:string | undefined
 }
 
 export type StudentDataExtended = StudentData & {
@@ -92,3 +93,5 @@ export type LoginType={
 }
 
 export type InitialStateType ={password:string, confirmPassword:string}
+
+export type GetUserType={ id:string | undefined; email:string | undefined; userRole:string | undefined} | undefined;

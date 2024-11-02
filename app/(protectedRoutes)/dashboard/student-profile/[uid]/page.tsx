@@ -40,8 +40,8 @@ import { DetailedStudentType } from "@/lib/definitions"
 import { Metadata } from "next"
   
 export const metadata: Metadata = {
-  title: "Create Record | Dashboard",
-  description: "Authentication forms built using the components.",
+  title: "Student Profile | Dashboard",
+  description: "Student Profile built using the components.",
 }
 
   
@@ -50,6 +50,7 @@ const imageIndex = Math.random() * bgImages.length;
   
   export default async function StudentProfilePage({params}:{params:{uid:string | number}}) {
     const studentData:DetailedStudentType = await getDetailedStudent(params.uid)
+    console.log('hunge:', studentData)
    
     return (
       <div className="grid min-h-dvh w-full pl-[53px]">

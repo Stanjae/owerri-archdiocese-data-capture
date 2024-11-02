@@ -36,6 +36,7 @@ export const StudentDataSchema = object({
     school:string({ required_error: "School is required" }),
     schoolclass:string({ required_error: "Class is required" }),
     classArm: string({ required_error: "Class Arm is required" }),
+    userId:string({required_error:"User Id is required"})
   })
 
   export const StudentDataSchemaExtended = StudentDataSchema.extend({

@@ -13,8 +13,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { StudentDataSchema } from '@/lib/zod'
 import { createStudent } from '@/app/actions'
 import { toast } from 'sonner'
+import { useData } from '@/lib/Providers/ContextApi'
 
 const CreateDataForm = ({getImageUrl, schools}:{getImageUrl:any; schools:any}) => {
+  const user = useData()
     
     const [state, setState] = useState<string>("imo")
 
@@ -28,12 +30,12 @@ const CreateDataForm = ({getImageUrl, schools}:{getImageUrl:any; schools:any}) =
       resolver:zodResolver(StudentDataSchema),
       defaultValues: {
         firstname:"", lastname:"", address:"", dob:"", gender:"", stateOfOrigin:"", LGA:"",
-        nextOfKin:"", phoneNoNextOfKin:"", school:"", schoolclass:"", classArm: ""
+        nextOfKin:"", phoneNoNextOfKin:"", school:"", schoolclass:"", classArm: "", userId:""
       },
      })
 
      const onSubmit =async(formData:StudentData)=>{
-      const response = await createStudent({...formData, getImageUrl:getImageUrl?.publicUrl})
+      const response = await createStudent({...formData, getImageUrl:getImageUrl?.publicUrl, userId:user?.id})
       if(response?.status == 201){
         toast.success(response.message)
       }else{
@@ -46,6 +48,7 @@ const CreateDataForm = ({getImageUrl, schools}:{getImageUrl:any; schools:any}) =
         <fieldset className="grid gap-6 rounded-lg border p-4">
             <legend className="-ml-1 px-1 text-sm font-medium">Student Data</legend>
                   <div className="grid grid-cols-2 gap-4">
+                    <input hidden {...register("userId")} value={user?.id}/>
                     <div className="grid gap-3">
                       <Label htmlFor="firstname">First Name</Label>
                       <Input {...register("firstname")} id="firstname" type="text" placeholder="Enter firstname" />

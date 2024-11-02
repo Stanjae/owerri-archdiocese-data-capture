@@ -3,8 +3,9 @@ import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "@/components/ThemeProvider"
 import ReactQueryProvider from '@/lib/Providers/ReactQueryProvider'
 import "./globals.css";
-import {dummyFunction} from './data'
+import {getCurrentUser} from './data'
 import { Toaster } from "sonner";
+import { ContextApi } from "@/lib/Providers/ContextApi";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -12,8 +13,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "ArchDiocese of Owerri DataCapture",
+  description: "...Ave maria",
 };
 
 export default async function RootLayout({
@@ -21,7 +22,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await dummyFunction()
+  const user = await getCurrentUser()
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased">
@@ -32,10 +33,12 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <ReactQueryProvider>
-            <main>
-              {children}
-              <Toaster position="bottom-right" richColors/>
-            </main>
+            <ContextApi initialData={user}>
+              <main>
+                {children}
+                <Toaster position="bottom-right" richColors/>
+              </main>
+            </ContextApi>
           </ReactQueryProvider>
         </ThemeProvider>
       </body>

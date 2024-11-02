@@ -19,6 +19,7 @@ const config = {
   	},
   	extend: {
   		colors: {
+			owarchGreen:'var(--owarch-green)',
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',

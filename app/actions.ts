@@ -218,22 +218,20 @@ export const createStudent = async(formData:StudentDataExtended)=>{
   let response;
 
   if (!validatedFields.success) {
-    console.log('finance: ',validatedFields.error)
+    
     return {
-      status: 400, message: 'Missing Fields. Failed to Create Student.',
+      status: 400, message: validatedFields.error.errors.at(0)?.message,
     };
   }
   const {firstname, lastname, address, gender, dob, stateOfOrigin, LGA, nextOfKin,
-         phoneNoNextOfKin, school, schoolclass, classArm, getImageUrl} = validatedFields.data
-
-         console.log("this might be:", validatedFields.data)
+         phoneNoNextOfKin, school, schoolclass, classArm, getImageUrl, userId} = validatedFields.data
   
   const fName = firstname + " " + lastname
 
   const { error } = await supabase.from('dataCaptureForStudents')
   .insert({ fullname: fName, address, gender, schoolclass, imageUrl:getImageUrl, class_arm:classArm, 
     phone_next_of_kin:phoneNoNextOfKin, date_of_birth:dob, state_of_origin:stateOfOrigin, lga:LGA,
-    next_of_kin:nextOfKin, school_id:school
+    next_of_kin:nextOfKin, school_id:school, author_id:userId
    })
 
   if(!error){

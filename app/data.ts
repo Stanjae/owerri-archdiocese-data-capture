@@ -2,8 +2,11 @@
 import { SchoolType } from "@/lib/definitions";
 import { createClient } from "@/utils/supabase/server";
 
-export const dummyFunction =async()=>{
-  console.log("online")
+/* auth */
+export const getCurrentUser =async()=>{
+  const supabase = createClient()
+  const {data:{user}} = await supabase.auth.getUser()
+  return {id:user?.id, email:user?.email, userRole: user?.user_metadata?.role}
 }
 
 export const handleFetchStates =async()=>{
@@ -50,6 +53,16 @@ export const getStudentDataById =async(id:string | number | undefined)=>{
 export async function getDetailedStudent(id:string | number | undefined){
   const supabase = createClient()
   const { data} = await supabase.from('dataCaptureForStudents')
-  .select('*, school_id (name)').eq("id", id)
+  .select('*, school_id (name), author_id').eq("id", id)
+
+  const { data:knee} = await supabase.from('profiles')
+  .select('*');
+
+  console.log("profiles:", knee)
   return data?.at(0)
 }
+
+
+/* auth */
+
+
