@@ -9,12 +9,13 @@ const Hero = () => (
         <GradientWrapper wrapperClassName="inset-0" className="custom-screen text-gray-600">
             <div className="space-y-5 max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl text-foreground font-extrabold mx-auto sm:text-6xl">
-                    The fastest way to Increase your <span className=" bg-clip-text text-transparent bg-gradient-to-r from-[#9867F0] to-[#ED4E50]">website traffic</span>
+                    Simplify & Transform Your <span className=" bg-clip-text text-transparent bg-gradient-to-r from-[#9867F0]
+                     to-[#ED4E50]">Data Collection</span>
                 </h1>
                 <p className="max-w-xl mx-auto">
-                    The ultimate way to capture user-based Data. Start your free trial now.
+                    Our intuitive web application makes collecting & managing data effortlessly.
                 </p>
-                <div className="flex items-center justify-center gap-x-3 font-medium text-sm">
+                <div className="flex items-center justify-center mt-5 gap-x-3 font-medium text-sm">
                     
                     <NavLink
                         href="#pricing"
