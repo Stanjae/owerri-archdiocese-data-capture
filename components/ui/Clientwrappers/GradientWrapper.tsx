@@ -5,7 +5,7 @@ const GradientWrapper = ({ children, ...props }:any) => (
     <div
         {...props}
         className={`relative py-28 ${props.className || ""}`}>
-        <div className={`absolute top-12 m-auto max-w-3xl h-[250px] blur-[130px] ${props.wrapperClassName || ""}`}
+        <div className={`absolute top-12 m-auto max-w-3xl h-[250px] blur-[130px] ${props.wrapperclassname || ""}`}
             style={{
                 background:
                     "linear-gradient(108.49deg, rgba(152, 103, 240, 0.24) 23.1%, rgba(237, 78, 80, 0.06) 62.53%)",

@@ -267,7 +267,7 @@ export const updateStudent = async(formData:EditStudentDataExtended)=>{
 
   if (!validatedFields.success) {
     return {
-      status: 400, message: 'Missing Fields. Failed to update Student.',
+      status: 400, message: validatedFields.error.errors.at(0)?.message,
     };
   }
   const {firstname, id, lastname, address, gender, dob, stateOfOrigin, LGA, nextOfKin,

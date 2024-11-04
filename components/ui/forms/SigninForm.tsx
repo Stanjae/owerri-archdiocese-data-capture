@@ -22,7 +22,7 @@ const SigninForm = () => {
         const response = await signInAction(formData)
         if(response?.status == 200){
           toast.success(response?.message)
-          setTimeout(()=> (router.push('/dashboard')), 2000)
+          setTimeout(()=> (router.push('/dashboard')), 1000)
         }else{
             toast.error(response?.message)
         }

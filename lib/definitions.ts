@@ -35,14 +35,30 @@ export type StudentData ={
         userId:string | undefined
 }
 
+export type EditStudentDataType ={
+        firstname:string;
+        lastname:string;
+        address:string;
+        dob:string;
+        gender: string;
+        stateOfOrigin:string;
+        LGA:string;
+        nextOfKin:string;
+        phoneNoNextOfKin:string | number;
+        school:string;
+        schoolclass:string;
+        classArm: string;
+}
+
 export type StudentDataExtended = StudentData & {
         getImageUrl:string | undefined;
 
 }
 
 
-export type EditStudentDataExtended = StudentDataExtended & {
+export type EditStudentDataExtended = EditStudentDataType & {
         id:string | number | undefined;
+        getImageUrl:string | undefined;
 }
 
 export type SchoolType = {
@@ -83,6 +99,7 @@ export type DetailedStudentType = TableStudentData & {
         lga:string;
         next_of_kin:string;
         phone_next_of_kin:string | number;
+        author_id: { username: string},
 }
 
 /* authentication */

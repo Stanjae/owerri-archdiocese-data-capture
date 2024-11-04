@@ -38,7 +38,7 @@ export async function getSchoolsOptions() {
 export async function getAllStudents(){
   const supabase = createClient()
   const { data} = await supabase.from('dataCaptureForStudents')
-  .select('id, fullname, schoolclass, imageUrl, class_arm, created_at,  school_id (name)')
+  .select('id, fullname, schoolclass, imageUrl, class_arm, created_at,  school_id (name), author_id')
   return data
 }
 
@@ -53,16 +53,22 @@ export const getStudentDataById =async(id:string | number | undefined)=>{
 export async function getDetailedStudent(id:string | number | undefined){
   const supabase = createClient()
   const { data} = await supabase.from('dataCaptureForStudents')
-  .select('*, school_id (name), author_id').eq("id", id)
-
-  const { data:knee} = await supabase.from('profiles')
-  .select('*');
-
-  console.log("profiles:", knee)
+  .select('*, school_id (name), author_id (username)').eq("id", id);
   return data?.at(0)
 }
 
 
-/* auth */
+/* analysis */
+export const getUserCardAnalysis =async()=>{
+  const supabase = createClient()
+  const {id} = await getCurrentUser();
+  const numberOfStudents = supabase.from('dataCaptureForStudents').select('*', {count:'exact', head:true})
+  const numberOfStudentsCreatedByUser = supabase.from('dataCaptureForStudents').select('*', {count:'exact', head:true}).eq("author_id", id)
+  const numberOfSchools = supabase.from('schoolsData').select('*', {count:'exact', head:true})
+  const numberOfUsers = supabase.from('profiles').select('*', {count:'exact', head:true})
+
+  const [studentsCount, studentsByUserCount, schoolsCount, usersCount] = await Promise.all([numberOfStudents, numberOfStudentsCreatedByUser, numberOfSchools, numberOfUsers])
+  return {studentsCount, studentsByUserCount, schoolsCount, usersCount}
+}
 
 

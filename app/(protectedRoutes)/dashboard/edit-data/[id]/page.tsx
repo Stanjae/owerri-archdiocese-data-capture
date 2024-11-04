@@ -30,7 +30,7 @@ import { Suspense } from "react"
 import { Metadata } from "next"
   
 export const metadata: Metadata = {
-  title: "Create Record | Dashboard",
+  title: "Edit Record | Dashboard",
   description: "Authentication forms built using the components.",
 }
   
@@ -155,10 +155,7 @@ export const metadata: Metadata = {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="grid gap-3">
-                      <Label htmlFor="content">Content</Label>
-                      <Textarea id="content" placeholder="You are a..." />
-                    </div>
+                   
                   </fieldset>
                 </form>
               </DrawerContent>

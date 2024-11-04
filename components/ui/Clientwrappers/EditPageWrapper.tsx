@@ -23,7 +23,7 @@ const EditPageWrapper = ({schools, student}:any) => {
             <WebcamCapture setGetImageUrl={setGetImageUrl}/>}
         </div>
         <div className="relative rounded-xl bg-muted/50 p-4 lg:col-span-2">
-              <EditDataForm student={student} schools={schools} getImageUrl={newImageUrl}/>
+              <EditDataForm student={student} schools={schools} getimageurl={newImageUrl}/>
         </div>
     </main>
   )

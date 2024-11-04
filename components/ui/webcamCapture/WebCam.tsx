@@ -108,7 +108,9 @@ const videoConstraints = {
             }
         </div>
         <div className=' py-2 flex gap-3 justify-center items-center'>
-            <Button onClick={()=> setImgSrc("")} variant={'destructive'} size={'default'}>Cancel Photo</Button>
+            {imgSrc && <Button onClick={()=> setImgSrc("")} variant={'destructive'} size={'default'}>
+              Cancel Photo
+            </Button>}
             <Button onClick={capture} variant={'outline'} size={'default'}>
               <Camera className="mr-4 h-4 w-4" />Capture
             </Button>
@@ -136,7 +138,7 @@ const videoConstraints = {
                 </SelectTrigger>
                 <SelectContent>
                 {devices && devices?.map((device:any, index:number) => (
-                   <SelectItem key={index} value={device?.deviceId || "hay"}>{device?.label}</SelectItem>
+                   <SelectItem key={index} value={device?.deviceId || ""}>{device?.label}</SelectItem>
                 ))}
                 </SelectContent>
               </Select>

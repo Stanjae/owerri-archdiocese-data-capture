@@ -7,15 +7,15 @@ import { Input } from '../input'
 import { Button } from '../button'
 import { schoolClasses, schoolsArms } from '@/lib/classes'
 import { useQuery } from '@tanstack/react-query'
-import { getStudentDataType, StudentData } from '@/lib/definitions'
+import { getStudentDataType, EditStudentDataType} from '@/lib/definitions'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { StudentDataSchema } from '@/lib/zod'
+import { EditStudentDataSchema } from '@/lib/zod'
 import { updateStudent } from '@/app/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
-const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:any; student:getStudentDataType}) => {
+const EditDataForm = ({getimageurl, schools, student}:{getimageurl:any; schools:any; student:getStudentDataType}) => {
     
     const [state, setState] = useState<any>(student?.state_of_origin)
     const fName = student?.fullname?.split(" ")
@@ -26,8 +26,8 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
       const {data:lgas, isFetching:loading} = useQuery({initialData: "", queryKey: ['lga', state], 
         queryFn:async()=> await handleFetchLgas(state)})
 
-     const {register,handleSubmit, setValue, formState: { errors, isSubmitting }} = useForm<StudentData>({
-      resolver:zodResolver(StudentDataSchema),
+     const {register,handleSubmit, setValue, formState: { errors, isSubmitting }} = useForm<EditStudentDataType>({
+      resolver:zodResolver(EditStudentDataSchema),
       defaultValues: {
         firstname:fName?.at(0), lastname:fName?.at(1), address:student?.address, dob:student?.date_of_birth, 
         gender:student?.gender, stateOfOrigin:student?.state_of_origin, LGA:student?.lga,
@@ -36,16 +36,16 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
       },
      })
 
-     const onSubmit =async(formData:StudentData)=>{
-      //console.log("renly: ", formData, getImageUrl)
-      const response = await updateStudent({...formData, getImageUrl:getImageUrl?.publicUrl, id:student?.id})
+     const onSubmit =async(formData:EditStudentDataType)=>{
+      const response = await updateStudent({...formData, getImageUrl:getimageurl?.publicUrl, id:student?.id})
       if(response?.status == 201){
         toast.success(response.message)
         router.push('/dashboard/all-records')
       }else{
-          toast.error(response.message)
+        toast.error(response.message)
       }
      }
+     
 
     
   return (
@@ -91,7 +91,7 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
                   </div>                  
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-3">
-                      <Label htmlFor="role">State of Origin</Label>
+                      <Label htmlFor="stateOfOrigin">State of Origin</Label>
                       <Select defaultValue={student?.state_of_origin} {...register("stateOfOrigin")} onValueChange={(e)=>{
                          setState(e);
                          setValue("stateOfOrigin", e);
@@ -109,7 +109,7 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
                       {errors?.stateOfOrigin && <p className=' text-red-600 dark:text-red-400 text-xs'>{errors?.stateOfOrigin.message}</p>}
                     </div>
                     <div className="grid gap-3">
-                    <Label htmlFor="role">LGA</Label>
+                    <Label htmlFor="LGA">LGA</Label>
                     <Select defaultValue={student?.lga} onValueChange={(e:string)=> setValue("LGA", e)} {...register("LGA")}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your LGA" />
@@ -142,7 +142,7 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
                    Academics
                   </legend>
                   <div className="grid gap-3">
-                    <Label htmlFor="role">School</Label>
+                    <Label htmlFor="school">School</Label>
                     <Select defaultValue={student?.school_id} onValueChange={(e:string)=> setValue("school", e)} {...register("school")}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a school" />
@@ -158,7 +158,7 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-3">
-                    <Label htmlFor="role">Class</Label>
+                    <Label htmlFor="schoolclass">Class</Label>
                     <Select defaultValue={student?.schoolclass} onValueChange={(e:string)=> setValue("schoolclass", e)} {...register("schoolclass")}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your Class" />
@@ -172,7 +172,7 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
                     {errors?.schoolclass && <p className=' text-red-600 dark:text-red-400 text-xs'>{errors?.schoolclass.message}</p>}
                     </div>
                     <div className="grid gap-3">
-                    <Label htmlFor="role">Arm</Label>
+                    <Label htmlFor="classArm">Arm</Label>
                     <Select defaultValue={student?.class_arm} onValueChange={(e:string)=> setValue("classArm", e)} {...register("classArm")}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your Class Arm" />
@@ -188,9 +188,9 @@ const EditDataForm = ({getImageUrl, schools, student}:{getImageUrl:any; schools:
                   </div>
                 </fieldset>
                 <div className='flex justify-end mt-3'>
-                  <Button type='submit' size={'lg'} variant={'default'}>{isSubmitting ? "Submitting..." : "Submit Data"}</Button>
+                  <Button className='z-40' type='submit' size={'lg'} variant={'default'}>{isSubmitting ? "Submitting..." : "Submit Data"}</Button>
                 </div>
-              </form>
+            </form>
   )
 }
 

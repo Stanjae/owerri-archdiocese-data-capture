@@ -39,14 +39,34 @@ export const StudentDataSchema = object({
     userId:string({required_error:"User Id is required"})
   })
 
+
+  export const EditStudentDataSchema = object({
+    firstname: string({ required_error: "firstname is required" })
+    .min(3, "First Name is too short"),
+    lastname: string({ required_error: "lastname is required" })
+    .min(3, "Last Name is too short"),
+    address: string().min(3, "Residential Address is too short"),
+    gender: string({ required_error: "Gender is should be male or female" }),
+    dob: string({ required_error: "date of birth is required" }),
+    stateOfOrigin:string({ required_error: "state is required" }),
+    LGA:string({ required_error: "LGA is required" }),
+    nextOfKin:string({ required_error: "Next-of-Kin is required" }),
+    phoneNoNextOfKin:string({ required_error: "Phone Number is required" }),
+    school:string({ required_error: "School is required" }),
+    schoolclass:string({ required_error: "Class is required" }),
+    classArm: string({ required_error: "Class Arm is required" }),
+  })
+
   export const StudentDataSchemaExtended = StudentDataSchema.extend({
     getImageUrl:string({required_error:"image url is required"}).min(3, "image url is too short")
   })
 
 
-  export const EditStudentDataSchemaExtended = StudentDataSchemaExtended.extend({
-    id:number()
+  export const EditStudentDataSchemaExtended = EditStudentDataSchema.extend({
+    id:string({required_error:"Id is required"}),
+    getImageUrl:string({required_error:"image url is required"}).min(3, "image url is too short")
   })
+  
 
 
 

@@ -26,6 +26,8 @@ import MobileDashNavLinks from "@/components/ui/navigation/MobileDashNavLinks"
 import DashBreadcrumbs from "@/components/ui/breadcrumbs/DashBreadcrumbs"
 import SearchField from "@/components/ui/Inputs/SearchField"
 import DashAvatar from "@/components/ui/avatars/DashAvatar"
+import { ModeToggle } from "@/components/ui/switchBtn/SwitchBtn"
+import { RoleBadge } from "@/components/ui/badges/RoleBadge"
 
 
 
@@ -70,7 +72,7 @@ export default async function DashBoardRootLayout({
           </TooltipProvider>
         </aside>
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-          <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+          <header className="sticky top-0 z-30 flex md:justify-between h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <Sheet>
               <SheetTrigger asChild>
                 <Button size="icon" variant="outline" className="sm:hidden">
@@ -99,9 +101,17 @@ export default async function DashBoardRootLayout({
                 </nav>
               </SheetContent>
             </Sheet>
-            <DashBreadcrumbs/>
+            <div  className="flex gap-x-4">
+              <DashBreadcrumbs/>
+              <RoleBadge/>
+            </div>
+            
+            <div  className="flex items-center gap-4 justify-end">
+              <ModeToggle/>
             <SearchField/>
             <DashAvatar/>
+            </div>
+            
           </header>
           {children}
         </div>

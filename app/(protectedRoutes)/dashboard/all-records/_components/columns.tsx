@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal ,LockKeyhole} from "lucide-react"
 import dayjs from 'dayjs'
 import relativeTime from "dayjs/plugin/relativeTime";
  
@@ -19,6 +19,7 @@ import { deleteStudent } from "@/app/actions";
 import Image from "next/image";
 import { TableStudentData } from "@/lib/definitions";
 import Link from "next/link";
+import { useData } from "@/lib/Providers/ContextApi";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want. 
@@ -129,9 +130,11 @@ export const columns: ColumnDef<TableStudentData>[] = [
     id: "actions",
     cell: ({ row }) => {
       const newData = row.original
+      const user  = useData()
       
       return (
         <DropdownMenu>
+          {user?.userRole !=  "admin" &&  newData?.author_id  !=  user?.id &&(<LockKeyhole className="h-4  w-4 text-yellow-600"/>)}
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu </span>
@@ -144,10 +147,14 @@ export const columns: ColumnDef<TableStudentData>[] = [
               <Link href={`student-profile/${newData?.id}`}>
                 <Button className="block w-full" size="sm" variant="link">View Profile</Button>
               </Link>
+             {(user?.userRole  =="admin" ||  user?.id  ==  newData?.author_id)  &&(<>              
               <Link href={`edit-data/${newData?.id}`}>
                 <Button className="block w-full" size="sm" variant="link">Edit</Button>
               </Link>
-              <DeleteConfirmation deleteFn={deleteStudent} id={newData?.id} title={newData?.firstname} btnText={'Delete'}/>
+              <DeleteConfirmation deleteFn={deleteStudent} id={newData?.id} title={newData?.firstname} 
+              btnText={'Delete'}/>
+              </>)}
+
            </DropdownMenuContent>
         </DropdownMenu>
       )

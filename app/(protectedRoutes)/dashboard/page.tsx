@@ -23,6 +23,7 @@ import TeamSwitcher from "@/components/ui/dashboard/team-switcher"
 import { UserNav } from "@/components/ui/dashboard/user-nav"
 import DashCardsWrapper from "@/components/ui/ServerWrappers/DashCardsWrapper"
 import { Suspense } from "react"
+import { DashCardsSkeleton } from "@/components/ui/skeletons/DashCardsSkeleton"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -57,7 +58,7 @@ export default async function DashboardPage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
-              <Suspense>
+              <Suspense fallback={<DashCardsSkeleton/>}>
                 <DashCardsWrapper/>
               </Suspense>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">

@@ -6,8 +6,12 @@ import {
     CardTitle,
   } from "../card"
 import { Backpack, GraduationCap, School, Users } from 'lucide-react'
+import { getUserCardAnalysis } from '@/app/data'
 
-const DashCardsWrapper = () => {
+const DashCardsWrapper = async() => {
+  const {studentsCount, studentsByUserCount, schoolsCount, usersCount}:any =  await getUserCardAnalysis()
+
+  console.log('shakrs:', studentsCount)
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
@@ -18,7 +22,7 @@ const DashCardsWrapper = () => {
                     <GraduationCap className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
+                    <div className="text-2xl font-bold">{studentsCount?.count}</div>
                     <p className="text-xs text-muted-foreground">
                       All time
                     </p>
@@ -32,7 +36,7 @@ const DashCardsWrapper = () => {
                     <School className="h-4 w-4 text-muted-foreground"/>     
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
+                    <div className="text-2xl font-bold">{schoolsCount?.count}</div>
                     <p className="text-xs text-muted-foreground">
                       All time
                     </p>
@@ -44,7 +48,7 @@ const DashCardsWrapper = () => {
                     <Backpack className="h-4 w-4 text-muted-foreground"/>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+12,234</div>
+                    <div className="text-2xl font-bold">{studentsByUserCount?.count}</div>
                     <p className="text-xs text-muted-foreground">
                       All time
                     </p>
@@ -58,9 +62,9 @@ const DashCardsWrapper = () => {
                     <Users className="h-4 w-4 text-muted-foreground"/>  
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
+                    <div className="text-2xl font-bold">{usersCount?.count}</div>
                     <p className="text-xs text-muted-foreground">
-                      +201 since last hour
+                      All time
                     </p>
                   </CardContent>
                 </Card>

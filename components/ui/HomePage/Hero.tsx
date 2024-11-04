@@ -6,7 +6,7 @@ import NavLink from "../navigation/CustomNavlink"
 
 const Hero = () => (
     <section>
-        <GradientWrapper wrapperClassName="inset-0" className="custom-screen text-gray-600">
+        <GradientWrapper wrapperclassname="inset-0" className="custom-screen text-gray-600">
             <div className="space-y-5 max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl text-foreground font-extrabold mx-auto sm:text-6xl">
                     Simplify & Transform Your <span className=" bg-clip-text text-transparent bg-gradient-to-r from-[#9867F0]

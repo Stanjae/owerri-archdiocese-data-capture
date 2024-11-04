@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import NavHeader from '../navigation/Navheader'
 import { ModeToggle } from "@/components/ui/switchBtn/SwitchBtn";
+import { Button } from '../button';
 
 
 
@@ -48,8 +49,8 @@ const Navbar = () => {
                         </ul>
                         <div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <ModeToggle/>
-                            <Link href="/sign-in" className="block text-owarchGreen hover:text-gray-900">
-                                Sign in
+                            <Link href="/sign-in" className="block hover:text-gray-900">
+                                <Button className='text-owarchGreen' variant='ghost'>Sign in</Button>
                             </Link>
                             
                         </div>

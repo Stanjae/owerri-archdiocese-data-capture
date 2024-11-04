@@ -50,7 +50,8 @@ const imageIndex = Math.random() * bgImages.length;
   
   export default async function StudentProfilePage({params}:{params:{uid:string | number}}) {
     const studentData:DetailedStudentType = await getDetailedStudent(params.uid)
-    console.log('hunge:', studentData)
+
+    const authorName = studentData?.author_id?.username?.split('@')?.at(0)
    
     return (
       <div className="grid min-h-dvh w-full pl-[53px]">
@@ -208,7 +209,7 @@ const imageIndex = Math.random() * bgImages.length;
                 <Card className=" w-full">
                   <CardHeader className=" flex justify-between flex-row items-center">
                     <CardTitle className=" text-xl">Student Information</CardTitle>
-                    <Badge variant="destructive">Posted by Stephen hawkins</Badge>
+                    <Badge variant="destructive">Posted by {authorName}</Badge>
                   </CardHeader>
                   <Separator/>
                   <CardContent>
