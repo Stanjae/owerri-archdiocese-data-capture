@@ -1,6 +1,7 @@
 'use server'
 import { SchoolType } from "@/lib/definitions";
 import { createClient } from "@/utils/supabase/server";
+import dayjs from "dayjs";
 
 /* auth */
 export const getCurrentUser =async()=>{
@@ -71,4 +72,15 @@ export const getUserCardAnalysis =async()=>{
   return {studentsCount, studentsByUserCount, schoolsCount, usersCount}
 }
 
+export const getRecentDataCaptureCount=async()=>{
+  const supabase = createClient()
+  const currentDate = dayjs().format('YYYY-MM-DD')
+  const day30ago  = dayjs().subtract(30,'day').format('YYYY-MM-DD')
+  const {id} = await getCurrentUser();
+  const {data} = await supabase.from('dataCaptureForStudents').select('fullname, class_arm, schoolclass,  school_id (name), created_at')
+  .eq("author_id", id).limit(5).order('created_at', {ascending:false})
 
+  const rangeCount  = data?.filter((item:any)=>  item?.created_at  <=  currentDate)?.length
+  //console.log('opera:',rangeCount)
+  return {rangeCount, data}
+}

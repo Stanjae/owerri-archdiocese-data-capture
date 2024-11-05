@@ -15,15 +15,18 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 //import { CalendarDateRangePicker } from "@/app/(app)/examples/dashboard/components/date-range-picker"
-import { MainNav } from "@/components/ui/dashboard/main-nav"
+//import { MainNav } from "@/components/ui/dashboard/main-nav"
 import { Overview } from "@/components/ui/dashboard/overview"
 import { RecentSales } from "@/components/ui/dashboard/recent-sales"
-import { Search } from "@/components/ui/dashboard/search-input"
-import TeamSwitcher from "@/components/ui/dashboard/team-switcher"
-import { UserNav } from "@/components/ui/dashboard/user-nav"
+//import { Search } from "@/components/ui/dashboard/search-input"
+//import TeamSwitcher from "@/components/ui/dashboard/team-switcher"
+//import { UserNav } from "@/components/ui/dashboard/user-nav"
 import DashCardsWrapper from "@/components/ui/ServerWrappers/DashCardsWrapper"
 import { Suspense } from "react"
 import { DashCardsSkeleton } from "@/components/ui/skeletons/DashCardsSkeleton"
+import { getRecentDataCaptureCount } from "@/app/data"
+import { RecentSalesSkeleton } from "@/components/ui/skeletons/RecentSalesSkeleton"
+import WelcomeText from "@/components/ui/Typography/WelcomeText"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -31,7 +34,7 @@ export const metadata: Metadata = {
 }
 
 export default async function DashboardPage() {
- 
+    const {rangeCount} = await getRecentDataCaptureCount()
   return (
     <>
       <div className="hidden flex-col md:flex">
@@ -41,7 +44,7 @@ export default async function DashboardPage() {
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
               {/* <CalendarDateRangePicker /> */}
-              <Button>Download</Button>
+              <WelcomeText/>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
@@ -72,13 +75,15 @@ export default async function DashboardPage() {
                 </Card>
                 <Card className="col-span-3">
                   <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
+                    <CardTitle>Recent Data Capture</CardTitle>
                     <CardDescription>
-                      You made 265 sales this month.
+                      You made {rangeCount} inserts this month.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <RecentSales />
+                    <Suspense fallback={<RecentSalesSkeleton/>}>
+                      <RecentSales />
+                    </Suspense>
                   </CardContent>
                 </Card>
               </div>

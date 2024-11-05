@@ -11,7 +11,6 @@ import { getUserCardAnalysis } from '@/app/data'
 const DashCardsWrapper = async() => {
   const {studentsCount, studentsByUserCount, schoolsCount, usersCount}:any =  await getUserCardAnalysis()
 
-  console.log('shakrs:', studentsCount)
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
